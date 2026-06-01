@@ -573,7 +573,7 @@ ncclResult_t ncclGinGdakiCreateContext(void *collComm, int nSignals, int nCounte
   NCCLCHECKGOTO(counters_table->exchange_info(cComm), status, out);
   NCCLCHECKGOTO(signals_table->exchange_info(cComm), status, out);
 
-  gdaki_ctx->port_num = 1; // assume 1 for mlx5 devices
+  gdaki_ctx->port_num = cComm->portNum;
   NCCLCHECKGOTO(wrap_ibv_query_port(cComm->ib.context, gdaki_ctx->port_num, &gdaki_ctx->port_attr),
                 status, out);
 
@@ -581,7 +581,7 @@ ncclResult_t ncclGinGdakiCreateContext(void *collComm, int nSignals, int nCounte
   NCCLCHECKGOTO(cComm->getGidIndex(cComm->ib.context, gdaki_ctx->port_num, &gdaki_ctx->port_attr, &ib_gid_index), status, out);
   gdaki_ctx->gid_index = ib_gid_index;
 
-  NCCLCHECKGOTO(wrap_ibv_query_gid(cComm->ib.context, 1, ib_gid_index, &gdaki_ctx->rgid), status,
+  NCCLCHECKGOTO(wrap_ibv_query_gid(cComm->ib.context, gdaki_ctx->port_num, ib_gid_index, &gdaki_ctx->rgid), status,
                 out);
 
   NCCLCHECKGOTO(gdakiCreateVerbsAh(gdaki_ctx, cComm->ib.context, ib_sl, ib_tc, ib_gid_index), status, out);

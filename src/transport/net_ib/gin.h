@@ -19,6 +19,7 @@ struct ncclGinIbCollComm {
   void*         recvComm;
   void*         sendComm;
   int           dev;
+  uint8_t       portNum;
   struct {
     struct ibv_context* context;
     struct ibv_pd *pd;

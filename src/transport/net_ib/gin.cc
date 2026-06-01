@@ -241,6 +241,7 @@ ncclResult_t ncclGinIbConnect(void *ctx, void *handles[], int nranks, int rank,
   cComm->allToAll = ncclGinIbAllToAll;
   cComm->getGidIndex = ncclIbGetGidIndex;
   cComm->dev = lComm->dev;
+  cComm->portNum = ncclIbDevs[cComm->dev].portNum;
 
   cComm->ib.context = ncclIbDevs[cComm->dev].context;
   cComm->ib.pd = ncclIbDevs[cComm->dev].pd;
